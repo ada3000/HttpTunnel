@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config responceContentType="image/jpeg">
+  <proxy id="yan" server="yandex.ru" port="80" />
+</config>

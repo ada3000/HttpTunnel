@@ -11,8 +11,13 @@ namespace HttpTunnel.AspServer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string id = Request.Params["id"];
             string direction = Request.Params["dir"];
+            if (direction == "in")
+                State.SetClientInput(id, Request.GetBufferlessInputStream());
 
+            if (direction == "out")
+                State.SetClientOutput(id, Response.OutputStream);
         }
     }
 }

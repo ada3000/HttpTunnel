@@ -10,12 +10,15 @@ using System.Threading;
 using System.Web.Hosting;
 
 using HttpTunnel;
+using log4net;
 
 namespace HttpTunnel.AspServer
 {
     public static class State
     {
         private static Dictionary<string, ClientInfo> Clients = new Dictionary<string, ClientInfo>();
+
+        public static readonly ILog Logger = LogManager.GetLogger("Common");
 
         private static ClientInfo GetClientInfo(string clientId)
         {
@@ -30,6 +33,7 @@ namespace HttpTunnel.AspServer
         }
         public static void SetClientInput(string clientId, Stream stream, ManualResetEvent ev = null)
         {
+            Logger.DebugFormat("SetClientInput for:" + clientId);
             var info = GetClientInfo(clientId);
             if (info.InputEnd != null) info.InputEnd.Set();
 
@@ -41,6 +45,8 @@ namespace HttpTunnel.AspServer
 
         public static void SetClientOutput(string clientId, Stream stream, ManualResetEvent ev = null)
         {
+            Logger.DebugFormat("SetClientOutput for:" + clientId);
+
             var info = GetClientInfo(clientId);
             if (info.OutputEnd != null) info.OutputEnd.Set();
             info.Output = stream;
@@ -49,6 +55,8 @@ namespace HttpTunnel.AspServer
 
         private static void OpenLocalSocket(string clientId)
         {
+            Logger.DebugFormat("OpenLocalSocket for:" + clientId);
+
             var proxy = Config.Proxies.Where(p => p.Id == clientId).FirstOrDefault();
             if (proxy == null)
                 throw new Exception("Proxy config not found for clientId='" + clientId + "'");

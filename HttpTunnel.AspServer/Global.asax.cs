@@ -13,6 +13,8 @@ namespace HttpTunnel.AspServer
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            log4net.LogManager.GetLogger("1").Debug("1");
+
             RouteTable.Routes.Add(new Route
             (
                 "tunnel",
